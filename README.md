@@ -1,38 +1,33 @@
-# 🔑 forge
+# 🔑 forgekey
 
 A fast, minimal password generator CLI built in Rust.
 
 ## Installation
 
 ```bash
-# Clone and build
-git clone https://github.com/vmagueta/forge.git
-cd forge
-cargo build --release
-
-# The binary will be at ./target/release/forge
+cargo install forgekey
 ```
 
 ## Usage
 
 ```bash
 # Generate a password (default: 16 characters)
-forge
+forgekey
 
 # Custom length
-forge --length 32
+forgekey --length 32
 
 # Generate multiple passwords
-forge -n 5
+forgekey -n 5
 
 # Exclude symbols
-forge --no-symbols
+forgekey --no-symbols
 
 # Exclude numbers and uppercase
-forge --no-numbers --no-uppercase
+forgekey --no-numbers --no-uppercase
 
 # Combine flags
-forge -l 32 -n 5 --no-symbols
+forgekey -l 32 -n 5 --no-symbols
 ```
 
 ## Options

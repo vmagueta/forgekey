@@ -2,9 +2,9 @@ use clap::Parser;
 use colored::Colorize;
 use rand::RngExt;
 
-/// 🔑 forge — A fast, minimal password generator.
+/// 🔑 forgekey — A fast, minimal password generator.
 #[derive(Parser)]
-#[command(name = "forge", version, about)]
+#[command(name = "forgekey", version, about)]
 struct Cli {
     /// Length of the generated password.
     #[arg(short, long, default_value_t = 16)]
