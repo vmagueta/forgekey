@@ -1,5 +1,8 @@
 # 🔑 forgekey
 
+[![Crates.io](https://img.shields.io/crates/v/forgekey)](https://crates.io/crates/forgekey)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
+
 A fast, minimal password generator CLI built in Rust.
 
 ## Installation
