@@ -2,6 +2,7 @@
 
 [![CI](https://github.com/vmagueta/forge/actions/workflows/ci.yml/badge.svg)](https://github.com/vmagueta/forge/actions/workflows/ci.yml)
 [![Crates.io](https://img.shields.io/crates/v/forgekey)](https://crates.io/crates/forgekey)
+[![codecov](https://codecov.io/gh/vmagueta/forge/branch/main/graph/badge.svg)](https://codecov.io/gh/vmagueta/forge)
 [![docs.rs](https://img.shields.io/docsrs/forgekey)](https://docs.rs/forgekey)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](LICENSE)
 
