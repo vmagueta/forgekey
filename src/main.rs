@@ -21,7 +21,20 @@ fn main() {
 
     for _ in 0..cli.number {
         match generate_password(&cli) {
-            Ok(password) => print_colored(&password),
+            Ok(password) => {
+                if cli.copy {
+                    use arboard::Clipboard;
+
+                    if let Ok(mut clipboard) = Clipboard::new() {
+                        let _ = clipboard.set_text(password.clone());
+                        println!("Copied to clipboard!");
+                    } else {
+                        println!("{}", password);
+                    }
+                } else {
+                    print_colored(&password);
+                }
+            }
             Err(error) => {
                 eprintln!("{}", error.red().bold());
                 std::process::exit(1);
