@@ -4,6 +4,19 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/), and this project adheres to [Semantic Versioning](https://semver.org/).
 
+## [Unreleased]
+
+### Added
+
+- Unit tests for `generate_password` (8 tests + 2 doctests)
+- CI workflow: formatting, linting, and tests via GitHub Actions
+- CD workflow: automatic publish to crates.io on release
+- README badges: CI status, docs.rs
+
+### Changed
+
+- Extracted core logic from `main.rs` into `lib.rs`
+
 ## [0.1.0] - 2026-03-27
 
 ### Added
