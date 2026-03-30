@@ -11,7 +11,8 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/), and this
 - Unit tests for `generate_password` (8 tests + 2 doctests)
 - CI workflow: formatting, linting, and tests via GitHub Actions
 - CD workflow: automatic publish to crates.io on release
-- README badges: CI status, docs.rs
+- Code coverage with `cargo-tarpaulin` and Codecov
+- README badges: CI status, coverage, docs.rs
 
 ### Changed
 
