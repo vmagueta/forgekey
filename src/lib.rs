@@ -22,7 +22,6 @@ use rand::RngExt;
 ///     no_uppercase: false,
 /// };
 /// ```
-
 #[derive(Parser)]
 #[command(name = "forgekey", version, about)]
 pub struct Cli {
@@ -91,7 +90,6 @@ pub const SYMBOLS: &str = "!@#$%^&*()_+-=[]{}|;:,.<>?";
 /// let password = generate_password(&cli).unwrap();
 /// assert_eq!(password.len(), 20);
 /// ```
-
 pub fn generate_password(cli: &Cli) -> Result<String, String> {
     if cli.length == 0 {
         return Err("Password length must be greater than zero.".to_string());
