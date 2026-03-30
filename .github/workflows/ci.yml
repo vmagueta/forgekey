@@ -31,8 +31,10 @@ jobs:
       - name: Run tests
         run: cargo test
 
+      - uses: taiki-e/install-action@cargo-tarpaulin
+
       - name: Generate coverage
-        run: cargo install cargo-tarpaulin && cargo tarpaulin --out xml
+        run: cargo tarpaulin --out xml --exclude-files src/main.rs
 
       - name: Upload coverage to Codecov
         uses: codecov/codecov-action@v5
