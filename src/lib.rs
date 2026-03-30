@@ -13,7 +13,7 @@ use rand::RngExt;
 /// # Examples
 /// ```
 /// use forgekey::Cli;
-/// 
+///
 /// let cli = Cli {
 ///     length: 24,
 ///     number: 3,
@@ -24,7 +24,7 @@ use rand::RngExt;
 /// ```
 
 #[derive(Parser)]
-#[command(name= "forgekey", version, about)]
+#[command(name = "forgekey", version, about)]
 pub struct Cli {
     /// Length of the generated password.
     #[arg(short, long, default_value_t = 16)]
@@ -47,7 +47,6 @@ pub struct Cli {
     pub no_uppercase: bool,
 }
 
-
 /// Characters: `a-z`
 pub const LOWERCASE: &str = "abcdefghijklmnopqrstuvwxyz";
 
@@ -59,7 +58,6 @@ pub const NUMBERS: &str = "0123456789";
 
 /// Characters `!@#$%^&*()_+-=[]{}|;:,.<>?`
 pub const SYMBOLS: &str = "!@#$%^&*()_+-=[]{}|;:,.<>?";
-
 
 /// Generates a single password based on the provided CLI options.
 ///
@@ -125,11 +123,9 @@ pub fn generate_password(cli: &Cli) -> Result<String, String> {
             charset_bytes[idx] as char
         })
         .collect();
-    
+
     Ok(password)
-
 }
-
 
 #[cfg(test)]
 mod tests {
