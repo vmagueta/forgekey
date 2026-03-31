@@ -34,6 +34,9 @@ forgekey --no-numbers --no-uppercase
 
 # Combine flags
 forgekey -l 32 -n 5 --no-symbols
+
+# Copy password to clipboard
+forgekey -c
 ```
 
 ## Options
@@ -45,6 +48,7 @@ forgekey -l 32 -n 5 --no-symbols
 | `--no-symbols` | | Exclude symbols | `false` |
 | `--no-numbers` | | Exclude numbers | `false` |
 | `--no-uppercase` | | Exclude uppercase | `false` |
+| `--copy` | `-c` | Copy password to clipboard | `false` |
 
 ## Built with
 

@@ -20,6 +20,7 @@ use rand::RngExt;
 ///     no_symbols: true,
 ///     no_numbers: false,
 ///     no_uppercase: false,
+///     copy: false,
 /// };
 /// ```
 #[derive(Parser)]
@@ -44,6 +45,10 @@ pub struct Cli {
     /// Exclude uppercase letters from the password.
     #[arg(long, default_value_t = false)]
     pub no_uppercase: bool,
+
+    /// Copy generated password to clipboard
+    #[arg(short, long)]
+    pub copy: bool,
 }
 
 /// Characters: `a-z`
@@ -85,6 +90,7 @@ pub const SYMBOLS: &str = "!@#$%^&*()_+-=[]{}|;:,.<>?";
 ///     no_symbols: false,
 ///     no_numbers: false,
 ///     no_uppercase: false,
+///     copy: false,
 /// };
 ///
 /// let password = generate_password(&cli).unwrap();
@@ -137,6 +143,7 @@ mod tests {
             no_symbols: false,
             no_numbers: false,
             no_uppercase: false,
+            copy: false,
         }
     }
 
@@ -206,5 +213,13 @@ mod tests {
         let p1 = generate_password(&cli).unwrap();
         let p2 = generate_password(&cli).unwrap();
         assert_ne!(p1, p2);
+    }
+
+    #[test]
+    fn test_copy_flag() {
+        use clap::Parser;
+
+        let cli = Cli::parse_from(["forgekey", "-c"]);
+        assert!(cli.copy);
     }
 }
