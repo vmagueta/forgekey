@@ -214,4 +214,12 @@ mod tests {
         let p2 = generate_password(&cli).unwrap();
         assert_ne!(p1, p2);
     }
+
+    #[test]
+    fn test_copy_flag() {
+        use clap::Parser;
+
+        let cli = Cli::parse_from(["forgekey", "-c"]);
+        assert!(cli.copy);
+    }
 }

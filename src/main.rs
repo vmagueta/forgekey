@@ -1,4 +1,5 @@
 use clap::Parser;
+use cli_clipboard::{ClipboardContext, ClipboardProvider};
 use colored::Colorize;
 use forgekey::{Cli, generate_password};
 
@@ -18,27 +19,24 @@ fn print_colored(password: &str) {
 
 fn main() {
     let cli = Cli::parse();
+    let mut passwords = Vec::new();
 
     for _ in 0..cli.number {
         match generate_password(&cli) {
             Ok(password) => {
-                if cli.copy {
-                    use arboard::Clipboard;
-
-                    if let Ok(mut clipboard) = Clipboard::new() {
-                        let _ = clipboard.set_text(password.clone());
-                        println!("Copied to clipboard!");
-                    } else {
-                        println!("{}", password);
-                    }
-                } else {
-                    print_colored(&password);
-                }
+                print_colored(&password);
+                passwords.push(password);
             }
             Err(error) => {
-                eprintln!("{}", error.red().bold());
+                eprintln!("{}", error);
                 std::process::exit(1);
             }
         }
+    }
+    if cli.copy {
+        let mut ctx: ClipboardContext = ClipboardProvider::new().unwrap();
+        ctx.set_contents(passwords.join("\n")).unwrap();
+
+        println!("Copied to clipboard!");
     }
 }
