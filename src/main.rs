@@ -34,9 +34,14 @@ fn main() {
         }
     }
     if cli.copy {
-        let mut ctx: ClipboardContext = ClipboardProvider::new().unwrap();
-        ctx.set_contents(passwords.join("\n")).unwrap();
-
-        println!("Copied to clipboard!");
+        match ClipboardProvider::new() {
+            Ok(mut ctx) => {
+                match ClipboardContext::set_contents(&mut ctx, passwords.join("\n")) {
+                    Ok(_) => println!("Copied to clipboard!"),
+                    Err(e) => eprintln!("Failed to copy to clipboard: {e}"),
+                }
+            }
+            Err(e) => eprintln!("Clipboard unavailable: {e}"),
+        }
     }
 }
