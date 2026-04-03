@@ -1,7 +1,7 @@
 use clap::Parser;
 use cli_clipboard::{ClipboardContext, ClipboardProvider};
 use colored::Colorize;
-use forgekey::{Cli, generate_password, calculate_entropy};
+use forgekey::{Cli, calculate_entropy, generate_password};
 
 /// Prints a password with each character colored by its type.
 fn print_colored(password: &str) {

@@ -53,7 +53,7 @@ pub struct Cli {
 
     /// Show password strength indicator
     #[arg(short, long)]
-    pub strength: bool
+    pub strength: bool,
 }
 
 /// Characters: `a-z`
@@ -163,7 +163,7 @@ mod tests {
             no_numbers: false,
             no_uppercase: false,
             copy: false,
-            strength: false
+            strength: false,
         }
     }
 
