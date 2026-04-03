@@ -1,7 +1,7 @@
 use clap::Parser;
 use cli_clipboard::{ClipboardContext, ClipboardProvider};
 use colored::Colorize;
-use forgekey::{Cli, generate_password};
+use forgekey::{Cli, calculate_entropy, generate_password};
 
 /// Prints a password with each character colored by its type.
 fn print_colored(password: &str) {
@@ -20,12 +20,15 @@ fn print_colored(password: &str) {
 fn main() {
     let cli = Cli::parse();
     let mut passwords = Vec::new();
+    let mut charset_size = 0;
 
     for _ in 0..cli.number {
         match generate_password(&cli) {
-            Ok(password) => {
+            // cs is charset_size comming from generate_password function
+            Ok((password, cs)) => {
                 print_colored(&password);
                 passwords.push(password);
+                charset_size = cs;
             }
             Err(error) => {
                 eprintln!("{}", error);
@@ -41,5 +44,16 @@ fn main() {
             },
             Err(e) => eprintln!("Clipboard unavailable: {e}"),
         }
+    }
+    if cli.strength {
+        let (entropy, level) = calculate_entropy(cli.length, charset_size);
+
+        let colored_level = match level {
+            "weak" => level.to_string().red(),
+            "fair" => level.to_string().yellow(),
+            "strong" => level.to_string().cyan(),
+            _ => level.to_string().green(),
+        };
+        println!("Strength: {} ({:.1} bits)", colored_level, entropy);
     }
 }

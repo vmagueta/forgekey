@@ -8,6 +8,7 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/), and this
 
 ### Added
 - Clipboard support with `-c` / `--copy` flag
+- Show Strength indicator with `-s` / `--strength` flag
 
 ## [0.2.0] - 2026-03-30
 
