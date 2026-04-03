@@ -35,12 +35,10 @@ fn main() {
     }
     if cli.copy {
         match ClipboardProvider::new() {
-            Ok(mut ctx) => {
-                match ClipboardContext::set_contents(&mut ctx, passwords.join("\n")) {
-                    Ok(_) => println!("Copied to clipboard!"),
-                    Err(e) => eprintln!("Failed to copy to clipboard: {e}"),
-                }
-            }
+            Ok(mut ctx) => match ClipboardContext::set_contents(&mut ctx, passwords.join("\n")) {
+                Ok(_) => println!("Copied to clipboard!"),
+                Err(e) => eprintln!("Failed to copy to clipboard: {e}"),
+            },
             Err(e) => eprintln!("Clipboard unavailable: {e}"),
         }
     }
