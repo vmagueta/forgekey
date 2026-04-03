@@ -21,6 +21,7 @@ use rand::RngExt;
 ///     no_numbers: false,
 ///     no_uppercase: false,
 ///     copy: false,
+///     strength: false
 /// };
 /// ```
 #[derive(Parser)]
@@ -49,6 +50,10 @@ pub struct Cli {
     /// Copy generated password to clipboard
     #[arg(short, long)]
     pub copy: bool,
+
+    /// Show password strength indicator
+    #[arg(short, long)]
+    pub strength: bool
 }
 
 /// Characters: `a-z`
@@ -91,12 +96,13 @@ pub const SYMBOLS: &str = "!@#$%^&*()_+-=[]{}|;:,.<>?";
 ///     no_numbers: false,
 ///     no_uppercase: false,
 ///     copy: false,
+///     strength: false
 /// };
 ///
-/// let password = generate_password(&cli).unwrap();
+/// let (password, _) = generate_password(&cli).unwrap();
 /// assert_eq!(password.len(), 20);
 /// ```
-pub fn generate_password(cli: &Cli) -> Result<String, String> {
+pub fn generate_password(cli: &Cli) -> Result<(String, usize), String> {
     if cli.length == 0 {
         return Err("Password length must be greater than zero.".to_string());
     }
@@ -128,7 +134,20 @@ pub fn generate_password(cli: &Cli) -> Result<String, String> {
         })
         .collect();
 
-    Ok(password)
+    Ok((password, charset_bytes.len()))
+}
+
+pub fn calculate_entropy(length: usize, charset_size: usize) -> (f64, &'static str) {
+    let entropy = length as f64 * (charset_size as f64).log2();
+
+    let result = match entropy as u32 {
+        0..28 => "weak",
+        28..36 => "fair",
+        36..60 => "strong",
+        60.. => "very strong",
+    };
+
+    (entropy, result)
 }
 
 #[cfg(test)]
@@ -144,13 +163,14 @@ mod tests {
             no_numbers: false,
             no_uppercase: false,
             copy: false,
+            strength: false
         }
     }
 
     #[test]
     fn test_default_password_length() {
         let cli = cli_default();
-        let password = generate_password(&cli).unwrap();
+        let (password, _) = generate_password(&cli).unwrap();
         assert_eq!(password.len(), 16);
     }
 
@@ -158,7 +178,7 @@ mod tests {
     fn test_custom_length() {
         let mut cli = cli_default();
         cli.length = 32;
-        let password = generate_password(&cli).unwrap();
+        let (password, _) = generate_password(&cli).unwrap();
         assert_eq!(password.len(), 32);
     }
 
@@ -175,7 +195,7 @@ mod tests {
         let mut cli = cli_default();
         cli.no_symbols = true;
         cli.length = 200;
-        let password = generate_password(&cli).unwrap();
+        let (password, _) = generate_password(&cli).unwrap();
         assert!(!password.chars().any(|c| SYMBOLS.contains(c)));
     }
 
@@ -184,7 +204,7 @@ mod tests {
         let mut cli = cli_default();
         cli.no_numbers = true;
         cli.length = 200;
-        let password = generate_password(&cli).unwrap();
+        let (password, _) = generate_password(&cli).unwrap();
         assert!(!password.chars().any(|c| c.is_ascii_digit()));
     }
 
@@ -193,7 +213,7 @@ mod tests {
         let mut cli = cli_default();
         cli.no_uppercase = true;
         cli.length = 200;
-        let password = generate_password(&cli).unwrap();
+        let (password, _) = generate_password(&cli).unwrap();
         assert!(!password.chars().any(|c| c.is_ascii_uppercase()));
     }
 
@@ -203,7 +223,7 @@ mod tests {
         cli.no_symbols = true;
         cli.no_numbers = true;
         cli.no_uppercase = true;
-        let password = generate_password(&cli).unwrap();
+        let (password, _) = generate_password(&cli).unwrap();
         assert!(password.chars().all(|c| c.is_ascii_lowercase()));
     }
 
@@ -221,5 +241,29 @@ mod tests {
 
         let cli = Cli::parse_from(["forgekey", "-c"]);
         assert!(cli.copy);
+    }
+
+    #[test]
+    fn test_weak_password() {
+        let (_, level) = calculate_entropy(4, 26);
+        assert_eq!(level, "weak");
+    }
+
+    #[test]
+    fn test_fair_password() {
+        let (_, level) = calculate_entropy(6, 36);
+        assert_eq!(level, "fair");
+    }
+
+    #[test]
+    fn test_strong_password() {
+        let (_, level) = calculate_entropy(8, 24);
+        assert_eq!(level, "strong");
+    }
+
+    #[test]
+    fn test_very_strong_password() {
+        let (_, level) = calculate_entropy(16, 88);
+        assert_eq!(level, "very strong");
     }
 }
