@@ -1,7 +1,7 @@
 use clap::Parser;
 use cli_clipboard::{ClipboardContext, ClipboardProvider};
 use colored::Colorize;
-use forgekey::{Cli, calculate_entropy, generate_password, generate_passphrase};
+use forgekey::{Cli, calculate_entropy, generate_passphrase, generate_password};
 
 /// Prints a password with each character colored by its type.
 fn print_colored(password: &str) {
@@ -19,7 +19,7 @@ fn print_colored(password: &str) {
 
 fn main() {
     let cli = Cli::parse();
-    
+
     if cli.passphrase {
         for _ in 0..cli.number {
             match generate_passphrase(&cli) {
@@ -37,7 +37,7 @@ fn main() {
 
     let mut passwords = Vec::new();
     let mut charset_size = 0;
-    
+
     for _ in 0..cli.number {
         match generate_password(&cli) {
             // cs is charset_size comming from generate_password function

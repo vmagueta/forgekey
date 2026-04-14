@@ -193,7 +193,6 @@ pub fn get_words() -> Vec<&'static str> {
     WORDLIST.lines().collect()
 }
 
-
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -210,7 +209,7 @@ mod tests {
             strength: false,
             passphrase: false,
             words: 4,
-            separator: String::from("-")
+            separator: String::from("-"),
         }
     }
 
@@ -324,7 +323,7 @@ mod tests {
 
     #[test]
     fn test_passphrase_custom_words() {
-          let mut cli = cli_default();
+        let mut cli = cli_default();
         cli.passphrase = true;
         cli.words = 6;
         let passphrase = generate_passphrase(&cli).unwrap();
@@ -334,7 +333,7 @@ mod tests {
 
     #[test]
     fn test_passphrase_custom_separator() {
-          let mut cli = cli_default();
+        let mut cli = cli_default();
         cli.passphrase = true;
         cli.separator = String::from("_");
         let passphrase = generate_passphrase(&cli).unwrap();
@@ -361,6 +360,4 @@ mod tests {
             assert!(wordlist.contains(&word));
         }
     }
-
-
 }
