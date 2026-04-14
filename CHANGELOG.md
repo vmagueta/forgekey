@@ -7,8 +7,17 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/), and this
 ## [Unreleased]
 
 ### Added
+
+
+## [1.0.0] - 2026-04-14
+
+### Added
 - Clipboard support with `-c` / `--copy` flag
 - Show Strength indicator with `-s` / `--strength` flag
+- Passphrase generation with `--passphrase` / `-p` flag
+- Configurable word count with `--words` (default: 4)
+- Configurable separator with `--separator` (default: `-`)
+- Embedded EFF Long Wordlist (7776 words) for passphrase generation
 
 ## [0.2.0] - 2026-03-30
 
