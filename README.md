@@ -37,6 +37,18 @@ forgekey -l 32 -n 5 --no-symbols
 
 # Copy password to clipboard
 forgekey -c
+
+# Generate a passphrase (default: 4 words)
+forgekey --passphrase
+
+# Custom word count
+forgekey --passphrase --words 6
+
+# Custom separator
+forgekey --passphrase --separator "_"
+
+# Multiple passphrases
+forgekey --passphrase -n 5
 ```
 
 ## Options
@@ -49,6 +61,13 @@ forgekey -c
 | `--no-numbers` | | Exclude numbers | `false` |
 | `--no-uppercase` | | Exclude uppercase | `false` |
 | `--copy` | `-c` | Copy password to clipboard | `false` |
+| `--passphrase` | `-p` | Generate a passphrase | `false` |
+| `--words` | `-w` | Number of words in passphrase | `4` |
+| `--separator` | | Word separator | `-` |
+
+## Passphrase generation
+
+Passphrases are generated using the [EFF Long Wordlist](https://www.eff.org/dice) (7776 words), the same standard used by major password managers.
 
 ## Built with
 
