@@ -21,7 +21,10 @@ use rand::RngExt;
 ///     no_numbers: false,
 ///     no_uppercase: false,
 ///     copy: false,
-///     strength: false
+///     strength: false,
+///     passphrase: false,
+///     words: 4,
+///     separator: String::from("-")
 /// };
 /// ```
 #[derive(Parser)]
@@ -54,6 +57,18 @@ pub struct Cli {
     /// Show password strength indicator
     #[arg(short, long)]
     pub strength: bool,
+
+    /// Generate a passphrase instead of a password
+    #[arg(short, long)]
+    pub passphrase: bool,
+
+    /// Number of words in the passphrase
+    #[arg(short, long, default_value_t = 4)]
+    pub words: usize,
+
+    /// Separator between words in the passphrase
+    #[arg(long, default_value = "-")]
+    pub separator: String,
 }
 
 /// Characters: `a-z`
@@ -96,7 +111,10 @@ pub const SYMBOLS: &str = "!@#$%^&*()_+-=[]{}|;:,.<>?";
 ///     no_numbers: false,
 ///     no_uppercase: false,
 ///     copy: false,
-///     strength: false
+///     strength: false,
+///     passphrase: false,
+///     words: 4,
+///     separator: String::from("-")
 /// };
 ///
 /// let (password, _) = generate_password(&cli).unwrap();
@@ -150,6 +168,32 @@ pub fn calculate_entropy(length: usize, charset_size: usize) -> (f64, &'static s
     (entropy, result)
 }
 
+pub fn generate_passphrase(cli: &Cli) -> Result<String, String> {
+    let words = get_words();
+
+    if cli.words == 0 {
+        return Err("Word count must be greater than zero.".to_string());
+    }
+
+    let mut rng = rand::rng();
+
+    let selected: Vec<&str> = (0..cli.words)
+        .map(|_| {
+            let idx = rng.random_range(0..words.len());
+            words[idx]
+        })
+        .collect();
+
+    Ok(selected.join(&cli.separator))
+}
+
+const WORDLIST: &str = include_str!("wordlist.txt");
+
+pub fn get_words() -> Vec<&'static str> {
+    WORDLIST.lines().collect()
+}
+
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -164,6 +208,9 @@ mod tests {
             no_uppercase: false,
             copy: false,
             strength: false,
+            passphrase: false,
+            words: 4,
+            separator: String::from("-")
         }
     }
 
@@ -266,4 +313,54 @@ mod tests {
         let (_, level) = calculate_entropy(16, 88);
         assert_eq!(level, "very strong");
     }
+    #[test]
+    fn test_passphrase_default() {
+        let mut cli = cli_default();
+        cli.passphrase = true;
+        let passphrase = generate_passphrase(&cli).unwrap();
+        let words: Vec<&str> = passphrase.split('-').collect();
+        assert_eq!(words.len(), 4);
+    }
+
+    #[test]
+    fn test_passphrase_custom_words() {
+          let mut cli = cli_default();
+        cli.passphrase = true;
+        cli.words = 6;
+        let passphrase = generate_passphrase(&cli).unwrap();
+        let words: Vec<&str> = passphrase.split('-').collect();
+        assert_eq!(words.len(), 6);
+    }
+
+    #[test]
+    fn test_passphrase_custom_separator() {
+          let mut cli = cli_default();
+        cli.passphrase = true;
+        cli.separator = String::from("_");
+        let passphrase = generate_passphrase(&cli).unwrap();
+        assert!(passphrase.contains('_'));
+        assert!(!passphrase.contains('-'));
+    }
+
+    #[test]
+    fn test_passphrase_zero_words_returns_error() {
+        let mut cli = cli_default();
+        cli.passphrase = true;
+        cli.words = 0;
+        let result = generate_passphrase(&cli);
+        assert!(result.is_err());
+    }
+
+    #[test]
+    fn test_passphrase_words_are_from_wordlist() {
+        let mut cli = cli_default();
+        cli.passphrase = true;
+        let passphrase = generate_passphrase(&cli).unwrap();
+        let wordlist = get_words();
+        for word in passphrase.split('-') {
+            assert!(wordlist.contains(&word));
+        }
+    }
+
+
 }
