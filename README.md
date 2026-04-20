@@ -1,4 +1,16 @@
-# 🔑 forgekey
+<p align="center">
+  <img src="assets/logo.png" alt="ForgeKey Logo" width="500">
+</p>
+
+<p align="center">
+    <a href="https://github.com/vmagueta/forge/actions/workflows/ci.yml"><img src="https://github.com/vmagueta/forge/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
+    <a href="https://crates.io/crates/forgekey"><img src="https://img.shields.io/crates/v/forgekey" alt="Crates.io"></a>
+    <a href="https://codecov.io/gh/vmagueta/forgekey"><img src="https://codecov.io/gh/vmagueta/forgekey/branch/main/graph/badge.svg" alt="codecov"></a>
+    <a href="https://docs.rs/forgekey"><img src="https://img.shields.io/docsrs/forgekey" alt="docs.rs"></a>
+    <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="License: MIT"></a>
+</p>
+
+<h3 align="center">A fast, minimal password generator CLI built in Rust.</h3>
 
 [![CI](https://github.com/vmagueta/forge/actions/workflows/ci.yml/badge.svg)](https://github.com/vmagueta/forge/actions/workflows/ci.yml)
 [![Crates.io](https://img.shields.io/crates/v/forgekey)](https://crates.io/crates/forgekey)
